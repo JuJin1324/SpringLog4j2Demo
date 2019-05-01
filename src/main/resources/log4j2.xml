@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration>
+<!-- monitorInterval : 로그 유지 날짜(ex: 30 - 30일동안만 로그 유지) -->
+<Configuration monitorInterval="30">
+    <Properties>
+        <Property name="LOG_FORMAT">%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</Property>
+        <Property name="BASE_DIR">logs/app.log</Property>
+    </Properties>
+
     <Appenders>
         <!-- Console Appender -->
         <Console name="Console" target="SYSTEM_OUT">
-            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n" />
+            <PatternLayout pattern="${LOG_FORMAT}" />
         </Console>
         <!-- File Appender -->
-        <File name="File" fileName="logs/app.log">
-            <PatternLayout pattern="%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n" />
+        <File name="File" fileName="${BASE_DIR}">
+            <PatternLayout pattern="${LOG_FORMAT}" />
         </File>
 
     </Appenders>
