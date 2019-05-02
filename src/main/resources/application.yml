@@ -1,4 +1,4 @@
 logging:
   level:
     root: DEBUG
-  config: conf/log4j2.xml
+#  config: ./conf/log4j2.xml

@@ -4,8 +4,8 @@
     <Properties>
         <!-- LOG_FORMAT 은 로그 안에 log.info 등을 표시할 때 나타나는 로그문의 포멧 -->
         <Property name="LOG_FORMAT">%d{yyyy-MMM-dd HH:mm:ss a} [%t] %-5level %logger{36} - %msg%n</Property>
-        <Property name="BASE_DIR">logs/app.log</Property>
-        <Property name="FILE_PATTERN">${BASE_DIR}.%d{yyyy.MM.dd}</Property>
+        <Property name="BASE_DIR">logs</Property>
+        <Property name="FILE_PATTERN">${BASE_DIR}/app.log.%d{yyyy.MM.dd}</Property>
     </Properties>
 
     <Appenders>
@@ -13,17 +13,15 @@
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${LOG_FORMAT}" />
         </Console>
-        <!-- File Appender -->
-        <File name="File" fileName="${BASE_DIR}">
-            <PatternLayout pattern="${LOG_FORMAT}" />
-        </File>
 
         <!-- Async File Log Appender -->
-        <RollingFile name="LogApp"
-                     fileName="${BASE_DIR}" filePattern="${FILE_PATTERN}"
+        <RollingFile name="AsyncFile"
+                     fileName="${BASE_DIR}/app.log"
+                     filePattern="${FILE_PATTERN}"
                      immediateFlush="false" append="true" ignoreExceptions="false">
             <PatternLayout>
-                <Pattern>%d %p %c{1.} [%t] %m%n</Pattern>
+                <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
+                <Pattern>${LOG_FORMAT}</Pattern>
             </PatternLayout>
 
             <Policies>
@@ -32,8 +30,8 @@
             <DefaultRolloverStrategy max="500" />
         </RollingFile>
 
-        <Async name="ASYNC_LogApp" includeLocation="true">
-            <AppenderRef ref="LogApp" />
+        <Async name="ASYNC_FILE" includeLocation="true">
+            <AppenderRef ref="AsyncFile" />
         </Async>
     </Appenders>
 
@@ -41,24 +39,24 @@
         <!-- Log everything in custom package -->
         <Logger name="spring.boot.log4j2.demo" level="debug" additivity="false">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="File" />
+            <AppenderRef ref="AsyncFile" />
         </Logger>
 
         <!-- Log everything in Spring Boot -->
         <Logger name="org.springframework.boot" level="debug" additivity="false">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="File" />
+            <AppenderRef ref="AsyncFile" />
         </Logger>
 
         <!-- Log everything in Spring Core -->
         <Logger name="org.springframework.core" level="debug" additivity="false">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="File" />
+            <AppenderRef ref="AsyncFile" />
         </Logger>
 
-        <Root level="error">
+        <Root level="debug">
             <AppenderRef ref="Console" />
-            <AppenderRef ref="LogApp" />
+            <AppenderRef ref="AsyncFile" />
         </Root>
 
     </Loggers>
