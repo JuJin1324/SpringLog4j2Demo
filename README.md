@@ -6,7 +6,7 @@
 ### Maven
 * ※ log4j2 사용을 위해서 기존 spring-boot-starter dependency에서 로그 디펜던시를 제외해야함.
 
-```
+```xml
 <dependency>
     <groupId>org.springframework.boot</groupId>
     <artifactId>spring-boot-starter</artifactId>
