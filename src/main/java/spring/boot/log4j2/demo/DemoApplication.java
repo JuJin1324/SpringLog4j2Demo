@@ -20,5 +20,4 @@ public class DemoApplication implements ApplicationRunner {
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }
-
 }

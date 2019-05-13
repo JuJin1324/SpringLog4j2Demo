@@ -1,4 +1,9 @@
 logging:
   level:
-    root: DEBUG
+    root: INFO
+    ### 패키지만 DEBUG 처리
+    spring:
+      boot:
+        log4j2:
+          demo: DEBUG
 #  config: ./conf/log4j2.xml
