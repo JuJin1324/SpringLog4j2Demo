@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- monitorInterval : 로그 유지 날짜(ex: 30 - 30일동안만 로그 유지) -->
+<Configuration monitorInterval="30">
+    <Properties>
+        <!-- LOG_FORMAT 은 로그 안에 log.info 등을 표시할 때 나타나는 로그문의 포멧 -->
+        <Property name="CONSOLE_LOG_PATTERN">%clr{%d{${LOG_DATEFORMAT_PATTERN}}}{faint} %clr{${LOG_LEVEL_PATTERN}} %clr{${sys:PID}}{magenta} %clr{---}{faint} %clr{[%15.15t]}{faint} %clr{%-40.40c{1.}}{cyan} %clr{:}{faint} %m%n${sys:LOG_EXCEPTION_CONVERSION_WORD}</Property>
+        <Property name="BASE_DIR">logs</Property>
+        <Property name="FILE_PATTERN">${BASE_DIR}/app.log.%d{yyyy.MM.dd}</Property>
+    </Properties>
+
+    <Appenders>
+        <!-- Console Appender -->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="${CONSOLE_LOG_PATTERN}" />
+        </Console>
+
+        <!-- Async File Log Appender -->
+        <RollingFile name="AsyncFile"
+                     fileName="${BASE_DIR}/app.log"
+                     filePattern="${FILE_PATTERN}"
+                     immediateFlush="false" append="true" ignoreExceptions="false">
+            <PatternLayout>
+                <!--<Pattern>%d %p %c{1.} [%t] %m%n</Pattern>-->
+                <Pattern>${CONSOLE_LOG_PATTERN}</Pattern>
+            </PatternLayout>
+
+            <Policies>
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+            <DefaultRolloverStrategy max="500" />
+        </RollingFile>
+
+        <Async name="ASYNC_FILE" includeLocation="true">
+            <AppenderRef ref="AsyncFile" />
+        </Async>
+    </Appenders>
+
+    <Loggers>
+        <!-- Log everything in custom package -->
+        <Logger name="spring.boot.log4j2.demo" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ASYNC_FILE" />
+        </Logger>
+
+        <!-- Log everything in Spring Boot -->
+        <Logger name="org.springframework.boot" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ASYNC_FILE" />
+        </Logger>
+
+        <!-- Log everything in Spring Core -->
+        <Logger name="org.springframework.core" level="debug" additivity="false">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ASYNC_FILE" />
+        </Logger>
+
+        <Root level="debug">
+            <AppenderRef ref="Console" />
+            <AppenderRef ref="ASYNC_FILE" />
+        </Root>
+
+    </Loggers>
+</Configuration>
